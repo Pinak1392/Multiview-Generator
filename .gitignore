@@ -1,2 +1,3 @@
 /venv
 /.vscode
+**/perspective_[0-9]*.png
