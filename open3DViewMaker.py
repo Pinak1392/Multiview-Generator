@@ -7,11 +7,13 @@ parser.add_argument("--input", help="Input mesh file")
 parser.add_argument("--views", type=int, default=5, help="Number of random perspectives to generate")
 parser.add_argument("--zoomMax", type=float, default=1.0, help="Maximum zoom level for the views")
 parser.add_argument("--zoomMin", type=float, default=0.5, help="Minimum zoom level for the views")
-parser.add_argument("--translation_range", type=float, default=500.0, help="Range for random translation")
+parser.add_argument("--translation_variance", type=float, default=1.0, help="Multiplier for translation variance based on mesh size")
 args = parser.parse_args()
 
 mesh = o3d.io.read_triangle_mesh(args.input)
 mesh.compute_vertex_normals()
+translation_range = mesh.get_max_bound() - mesh.get_min_bound()
+translation_range *= args.translation_variance
 
 vis = o3d.visualization.Visualizer()
 vis.create_window("3D Mesh Perspectives", width=600, height=600, left=0, top=0)
@@ -23,7 +25,7 @@ vis.add_geometry(mesh)
 for _ in range(args.views):
 
     # Generate a random translation vector
-    random_translation = ((np.random.rand(3) * args.translation_range - args.translation_range / 2) + mesh.get_center())
+    random_translation = ((np.random.rand(3) * translation_range - translation_range / 2) + mesh.get_center())
 
     # Zoom variance
     random_zoom = np.random.uniform(args.zoomMin, args.zoomMax)
