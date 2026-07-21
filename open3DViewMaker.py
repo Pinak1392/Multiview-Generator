@@ -4,11 +4,11 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Generate 3D mesh perspectives")
-parser.add_argument("--input", help="Input mesh file or directory containing mesh files", required=True)
-parser.add_argument("--views", type=int, default=5, help="Number of random perspectives to generate")
-parser.add_argument("--zoomMax", type=float, default=1.0, help="Maximum zoom level for the views")
-parser.add_argument("--zoomMin", type=float, default=0.5, help="Minimum zoom level for the views")
-parser.add_argument("--translation_variance", type=float, default=1.0, help="Multiplier for translation variance based on mesh size")
+parser.add_argument("--input","-i", help="Input mesh file or directory containing mesh files", required=True)
+parser.add_argument("--views","-v", type=int, default=5, help="Number of random perspectives to generate")
+parser.add_argument("--zoomMax","-Z", type=float, default=1.0, help="Maximum zoom level for the views")
+parser.add_argument("--zoomMin","-z", type=float, default=0.5, help="Minimum zoom level for the views")
+parser.add_argument("--translation_variance","-tv", type=float, default=1.0, help="Multiplier for translation variance based on mesh size")
 parser.add_argument("-r", "--recursive", action="store_true", help="Recursively process directories for mesh files", default=False)
 args = parser.parse_args()
 
