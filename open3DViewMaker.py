@@ -23,7 +23,7 @@ vis.add_geometry(mesh)
 for _ in range(args.views):
 
     # Generate a random translation vector
-    random_translation = np.append((np.random.rand(2) * args.translation_range - args.translation_range / 2),0) + mesh.get_center()
+    random_translation = ((np.random.rand(3) * args.translation_range - args.translation_range / 2) + mesh.get_center())
 
     # Zoom variance
     random_zoom = np.random.uniform(args.zoomMin, args.zoomMax)
