@@ -17,10 +17,14 @@ translation_range *= args.translation_variance
 
 vis = o3d.visualization.Visualizer()
 vis.create_window("3D Mesh Perspectives", width=600, height=600, left=0, top=0)
-vis.get_render_option().background_color = [0, 0, 0]
 view_control = vis.get_view_control()
 vis.add_geometry(mesh)
 
+# Set up rendering options
+render_option = vis.get_render_option()
+render_option.background_color = [0, 0, 0]
+render_option.light_on = True
+render_option.mesh_shade_option = o3d.visualization.MeshShadeOption.Color
 
 for _ in range(args.views):
 
@@ -52,5 +56,6 @@ for _ in range(args.views):
     view_control.set_front(random_front)
     view_control.set_up(random_rotation)
     view_control.set_lookat(random_translation)
-    
-    vis.capture_screen_image(f"perspective_{_}.png",True)
+
+    vis.update_renderer()
+    vis.capture_screen_image(f"perspective_{_}.png", True)
