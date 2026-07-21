@@ -16,7 +16,12 @@ vis.get_render_option().background_color = [0, 0, 0]
 view_control = vis.get_view_control()
 vis.add_geometry(mesh)
 for _ in range(args.views):
-    random_translation = ((np.random.rand(3) * 1000 - 500) + mesh.get_center())  # Random translation
+
+    # Generate a random translation vector
+    # random_translation = ((np.random.rand(3) * 1000 - 500) + mesh.get_center())
+    random_translation = mesh.get_center()
+
+    # Generate a random rotation vector
     theta = np.random.rand() * 2 * np.pi
     phi = np.arccos(2 * np.random.rand() - 1)
     random_rotation = np.array([
@@ -24,8 +29,19 @@ for _ in range(args.views):
         np.sin(phi) * np.sin(theta),
         np.cos(phi)
     ])
+
+    # Generate a random rotation vector
+    theta = np.random.rand() * 2 * np.pi
+    phi = np.arccos(2 * np.random.rand() - 1)
+    random_front = np.array([
+        np.sin(phi) * np.cos(theta),
+        np.sin(phi) * np.sin(theta),
+        np.cos(phi)
+    ])
     
-    view_control.set_front(random_rotation)
+    view_control.set_zoom(1)
+    view_control.set_front(random_front)
+    view_control.set_up(random_rotation)
     view_control.set_lookat(random_translation)
+    
     vis.capture_screen_image(f"perspective_{_}.png",True)
-    # vis.clear_geometries()
