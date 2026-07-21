@@ -5,6 +5,9 @@ import argparse
 parser = argparse.ArgumentParser(description="Generate 3D mesh perspectives")
 parser.add_argument("--input", help="Input mesh file")
 parser.add_argument("--views", type=int, default=5, help="Number of random perspectives to generate")
+parser.add_argument("--zoomMax", type=float, default=1.0, help="Maximum zoom level for the views")
+parser.add_argument("--zoomMin", type=float, default=0.5, help="Minimum zoom level for the views")
+parser.add_argument("--translation_range", type=float, default=500.0, help="Range for random translation")
 args = parser.parse_args()
 
 mesh = o3d.io.read_triangle_mesh(args.input)
@@ -15,11 +18,15 @@ vis.create_window("3D Mesh Perspectives", width=600, height=600, left=0, top=0)
 vis.get_render_option().background_color = [0, 0, 0]
 view_control = vis.get_view_control()
 vis.add_geometry(mesh)
+
+
 for _ in range(args.views):
 
     # Generate a random translation vector
-    # random_translation = ((np.random.rand(3) * 1000 - 500) + mesh.get_center())
-    random_translation = mesh.get_center()
+    random_translation = ((np.random.rand(3) * args.translation_range - args.translation_range / 2) + mesh.get_center())
+
+    # Zoom variance
+    random_zoom = np.random.uniform(args.zoomMin, args.zoomMax)
 
     # Generate a random rotation vector
     theta = np.random.rand() * 2 * np.pi
@@ -39,7 +46,7 @@ for _ in range(args.views):
         np.cos(phi)
     ])
     
-    view_control.set_zoom(1)
+    view_control.set_zoom(random_zoom)
     view_control.set_front(random_front)
     view_control.set_up(random_rotation)
     view_control.set_lookat(random_translation)
